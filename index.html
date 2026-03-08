@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 <title>AI Prompt Library</title>
 
-  <style>
+<style>
+
 body{
 font-family: Arial;
 max-width: 900px;
@@ -12,8 +14,16 @@ padding:20px;
 background:#f6f8fa;
 }
 
-h2{
-margin-top:40px;
+h1{
+text-align:center;
+}
+
+.prompt{
+background:white;
+padding:20px;
+margin-top:25px;
+border-radius:8px;
+box-shadow:0 2px 5px rgba(0,0,0,0.1);
 }
 
 button{
@@ -22,49 +32,83 @@ color:white;
 padding:10px 15px;
 border:none;
 cursor:pointer;
+margin-top:10px;
+border-radius:5px;
 }
+
+button:hover{
+background:#333;
+}
+
 </style>
-  
+
 </head>
 
 <body>
 
 <h1>AI Prompt Library</h1>
 
+
+<div class="prompt">
+
 <h2>ChatGPT Blog Writing Prompt</h2>
 
 <p>
 Act as a professional travel blogger and write a detailed article about the best tourist places in Karnataka.
 </p>
-  
 
-<button onclick="copyPrompt()">Copy Prompt</button>
-
-  <h2>ChatGPT Startup Idea Prompt</h2>
-<p>Generate 10 SaaS startup ideas in the AI industry that solve real problems.</p>
 <button onclick="copyPrompt(this)">Copy Prompt</button>
+
+</div>
+
+
+
+<div class="prompt">
+
+<h2>ChatGPT Startup Idea Prompt</h2>
+
+<p>
+Generate 10 SaaS startup ideas in the AI industry that solve real problems.
+</p>
+
+<button onclick="copyPrompt(this)">Copy Prompt</button>
+
+</div>
+
+
+
+<div class="prompt">
 
 <h2>ChatGPT SEO Blog Prompt</h2>
-<p>Write a 1500-word SEO optimized blog post about digital marketing trends in 2026.</p>
+
+<p>
+Write a 1500-word SEO optimized blog post about digital marketing trends in 2026.
+</p>
+
 <button onclick="copyPrompt(this)">Copy Prompt</button>
-  
+
+</div>
+
+
 
 <script>
-function copyPrompt() {
-navigator.clipboard.writeText("Act as a professional travel blogger and write a detailed article about the best tourist places in Karnataka.");
-alert("Prompt Copied!");
 
-  
+function copyPrompt(btn){
+
+const text = btn.previousElementSibling.innerText;
+
+navigator.clipboard.writeText(text);
+
+btn.innerText = "Copied!";
+
+setTimeout(()=>{
+btn.innerText = "Copy Prompt";
+},2000);
+
 }
+
 </script>
 
-  <script>
-function copyPrompt(btn) {
-  const text = btn.previousElementSibling.innerText;
-  navigator.clipboard.writeText(text);
-  btn.innerText = "Copied!";
-}
-</script>
-  
 </body>
+
 </html>
