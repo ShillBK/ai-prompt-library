@@ -8,7 +8,7 @@
 
 body{
 font-family: Arial;
-max-width: 900px;
+max-width:1000px;
 margin:auto;
 padding:20px;
 background:#f6f8fa;
@@ -18,10 +18,27 @@ h1{
 text-align:center;
 }
 
+.search-box{
+text-align:center;
+margin:30px 0;
+}
+
+input{
+width:60%;
+padding:10px;
+font-size:16px;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+.category{
+margin-top:40px;
+}
+
 .prompt{
 background:white;
 padding:20px;
-margin-top:25px;
+margin-top:15px;
 border-radius:8px;
 box-shadow:0 2px 5px rgba(0,0,0,0.1);
 }
@@ -29,11 +46,11 @@ box-shadow:0 2px 5px rgba(0,0,0,0.1);
 button{
 background:black;
 color:white;
-padding:10px 15px;
+padding:8px 14px;
 border:none;
+border-radius:5px;
 cursor:pointer;
 margin-top:10px;
-border-radius:5px;
 }
 
 button:hover{
@@ -46,46 +63,63 @@ background:#333;
 
 <body>
 
-<h1>AI Prompt Library</h1>
+<h1>🚀 AI Prompt Library</h1>
 
+<div class="search-box">
+<input type="text" id="searchInput" placeholder="Search prompts..." onkeyup="searchPrompts()">
+</div>
+
+
+<div class="category">
+<h2>✍️ Writing Prompts</h2>
 
 <div class="prompt">
-
-<h2>ChatGPT Blog Writing Prompt</h2>
-
-<p>
-Act as a professional travel blogger and write a detailed article about the best tourist places in Karnataka.
-</p>
-
+<h3>Travel Blog Prompt</h3>
+<p>Act as a professional travel blogger and write a detailed article about the best tourist places in Karnataka.</p>
 <button onclick="copyPrompt(this)">Copy Prompt</button>
+</div>
+
+<div class="prompt">
+<h3>SEO Blog Prompt</h3>
+<p>Write a 1500-word SEO optimized blog post about digital marketing trends in 2026.</p>
+<button onclick="copyPrompt(this)">Copy Prompt</button>
+</div>
 
 </div>
 
 
+<div class="category">
+<h2>💼 Business Prompts</h2>
 
 <div class="prompt">
-
-<h2>ChatGPT Startup Idea Prompt</h2>
-
-<p>
-Generate 10 SaaS startup ideas in the AI industry that solve real problems.
-</p>
-
+<h3>Startup Idea Generator</h3>
+<p>Generate 10 SaaS startup ideas in the AI industry that solve real problems.</p>
 <button onclick="copyPrompt(this)">Copy Prompt</button>
+</div>
+
+<div class="prompt">
+<h3>Pitch Deck Prompt</h3>
+<p>Create a startup pitch deck outline for an AI-powered productivity tool.</p>
+<button onclick="copyPrompt(this)">Copy Prompt</button>
+</div>
 
 </div>
 
 
+<div class="category">
+<h2>💻 Coding Prompts</h2>
 
 <div class="prompt">
-
-<h2>ChatGPT SEO Blog Prompt</h2>
-
-<p>
-Write a 1500-word SEO optimized blog post about digital marketing trends in 2026.
-</p>
-
+<h3>Debug Code Prompt</h3>
+<p>Act as a senior software engineer and help debug this code step-by-step.</p>
 <button onclick="copyPrompt(this)">Copy Prompt</button>
+</div>
+
+<div class="prompt">
+<h3>Explain Code Prompt</h3>
+<p>Explain the following code like I'm a beginner programmer.</p>
+<button onclick="copyPrompt(this)">Copy Prompt</button>
+</div>
 
 </div>
 
@@ -102,13 +136,34 @@ navigator.clipboard.writeText(text);
 btn.innerText = "Copied!";
 
 setTimeout(()=>{
-btn.innerText = "Copy Prompt";
+btn.innerText="Copy Prompt";
 },2000);
+
+}
+
+
+
+function searchPrompts(){
+
+let input = document.getElementById("searchInput").value.toLowerCase();
+let prompts = document.getElementsByClassName("prompt");
+
+for(let i=0;i<prompts.length;i++){
+
+let text = prompts[i].innerText.toLowerCase();
+
+if(text.includes(input)){
+prompts[i].style.display="block";
+}else{
+prompts[i].style.display="none";
+}
+
+}
 
 }
 
 </script>
 
-</body>
 
+</body>
 </html>
