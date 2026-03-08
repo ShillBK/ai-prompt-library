@@ -6,12 +6,10 @@
 
 <style>
 
-*{
-box-sizing:border-box;
-}
+*{box-sizing:border-box;}
 
 body{
-font-family:Arial, sans-serif;
+font-family:Arial;
 margin:0;
 background:#f4f6f8;
 transition:0.3s;
@@ -31,11 +29,6 @@ justify-content:space-between;
 align-items:center;
 }
 
-header h1{
-margin:0;
-font-size:22px;
-}
-
 .container{
 max-width:1100px;
 margin:auto;
@@ -43,14 +36,13 @@ padding:20px;
 }
 
 .search{
-margin:20px 0;
 text-align:center;
+margin-bottom:25px;
 }
 
 .search input{
 width:60%;
 padding:10px;
-font-size:16px;
 border-radius:6px;
 border:1px solid #ccc;
 }
@@ -72,10 +64,6 @@ box-shadow:0 3px 8px rgba(0,0,0,0.1);
 background:#1e1e1e;
 }
 
-.prompt h3{
-margin-top:0;
-}
-
 button{
 background:black;
 color:white;
@@ -86,8 +74,8 @@ cursor:pointer;
 margin-top:10px;
 }
 
-button:hover{
-background:#333;
+.vote{
+background:#ff9800;
 }
 
 .form-box{
@@ -116,7 +104,7 @@ border:1px solid #ccc;
 <body>
 
 <header>
-<h1>🚀 AI Prompt Library</h1>
+<h2>🚀 AI Prompt Library</h2>
 <button onclick="toggleDark()">Dark Mode</button>
 </header>
 
@@ -132,30 +120,21 @@ border:1px solid #ccc;
 <h3>Travel Blog Prompt</h3>
 <p>Act as a professional travel blogger and write about the best tourist places in Karnataka.</p>
 <button onclick="copyPrompt(this)">Copy Prompt</button>
+<button class="vote" onclick="vote(this)">⭐ <span>0</span></button>
 </div>
 
 <div class="prompt">
 <h3>Startup Idea Prompt</h3>
 <p>Generate 10 SaaS startup ideas in the AI industry.</p>
 <button onclick="copyPrompt(this)">Copy Prompt</button>
+<button class="vote" onclick="vote(this)">⭐ <span>0</span></button>
 </div>
 
 <div class="prompt">
 <h3>SEO Blog Prompt</h3>
 <p>Write a 1500-word SEO optimized blog post about digital marketing trends.</p>
 <button onclick="copyPrompt(this)">Copy Prompt</button>
-</div>
-
-<div class="prompt">
-<h3>YouTube Script Prompt</h3>
-<p>Write a 5-minute YouTube script about artificial intelligence trends.</p>
-<button onclick="copyPrompt(this)">Copy Prompt</button>
-</div>
-
-<div class="prompt">
-<h3>Debug Code Prompt</h3>
-<p>Act as a senior engineer and help debug this code step-by-step.</p>
-<button onclick="copyPrompt(this)">Copy Prompt</button>
+<button class="vote" onclick="vote(this)">⭐ <span>0</span></button>
 </div>
 
 </div>
@@ -177,6 +156,7 @@ border:1px solid #ccc;
 <script>
 
 function copyPrompt(btn){
+
 let text=btn.previousElementSibling.innerText
 navigator.clipboard.writeText(text)
 
@@ -185,6 +165,19 @@ btn.innerText="Copied!"
 setTimeout(()=>{
 btn.innerText="Copy Prompt"
 },2000)
+
+}
+
+
+function vote(btn){
+
+let span=btn.querySelector("span")
+let count=parseInt(span.innerText)
+
+count++
+
+span.innerText=count
+
 }
 
 
@@ -232,6 +225,7 @@ div.innerHTML=`
 <h3>${title}</h3>
 <p>${text}</p>
 <button onclick="copyPrompt(this)">Copy Prompt</button>
+<button class="vote" onclick="vote(this)">⭐ <span>0</span></button>
 `
 
 document.getElementById("promptGrid").appendChild(div)
