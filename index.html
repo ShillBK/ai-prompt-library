@@ -2,6 +2,29 @@
 <html>
 <head>
 <title>AI Prompt Library</title>
+
+  <style>
+body{
+font-family: Arial;
+max-width: 900px;
+margin:auto;
+padding:20px;
+background:#f6f8fa;
+}
+
+h2{
+margin-top:40px;
+}
+
+button{
+background:black;
+color:white;
+padding:10px 15px;
+border:none;
+cursor:pointer;
+}
+</style>
+  
 </head>
 
 <body>
@@ -17,12 +40,31 @@ Act as a professional travel blogger and write a detailed article about the best
 
 <button onclick="copyPrompt()">Copy Prompt</button>
 
+  <h2>ChatGPT Startup Idea Prompt</h2>
+<p>Generate 10 SaaS startup ideas in the AI industry that solve real problems.</p>
+<button onclick="copyPrompt(this)">Copy Prompt</button>
+
+<h2>ChatGPT SEO Blog Prompt</h2>
+<p>Write a 1500-word SEO optimized blog post about digital marketing trends in 2026.</p>
+<button onclick="copyPrompt(this)">Copy Prompt</button>
+  
+
 <script>
 function copyPrompt() {
 navigator.clipboard.writeText("Act as a professional travel blogger and write a detailed article about the best tourist places in Karnataka.");
 alert("Prompt Copied!");
+
+  
 }
 </script>
 
+  <script>
+function copyPrompt(btn) {
+  const text = btn.previousElementSibling.innerText;
+  navigator.clipboard.writeText(text);
+  btn.innerText = "Copied!";
+}
+</script>
+  
 </body>
 </html>
