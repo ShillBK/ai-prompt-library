@@ -8,7 +8,7 @@
 
 body{
 font-family: Arial;
-max-width:1000px;
+max-width:1100px;
 margin:auto;
 padding:20px;
 background:#f6f8fa;
@@ -69,6 +69,7 @@ background:#333;
 <input type="text" id="searchInput" placeholder="Search prompts..." onkeyup="searchPrompts()">
 </div>
 
+<!-- WRITING PROMPTS -->
 
 <div class="category">
 <h2>✍️ Writing Prompts</h2>
@@ -85,8 +86,21 @@ background:#333;
 <button onclick="copyPrompt(this)">Copy Prompt</button>
 </div>
 
+<div class="prompt">
+<h3>YouTube Script Prompt</h3>
+<p>Write a 5-minute engaging YouTube video script about artificial intelligence trends.</p>
+<button onclick="copyPrompt(this)">Copy Prompt</button>
 </div>
 
+<div class="prompt">
+<h3>Story Writing Prompt</h3>
+<p>Write a short science fiction story about humans living on Mars.</p>
+<button onclick="copyPrompt(this)">Copy Prompt</button>
+</div>
+
+</div>
+
+<!-- BUSINESS PROMPTS -->
 
 <div class="category">
 <h2>💼 Business Prompts</h2>
@@ -98,6 +112,18 @@ background:#333;
 </div>
 
 <div class="prompt">
+<h3>Business Plan Prompt</h3>
+<p>Create a simple business plan for a small online clothing brand.</p>
+<button onclick="copyPrompt(this)">Copy Prompt</button>
+</div>
+
+<div class="prompt">
+<h3>Marketing Strategy Prompt</h3>
+<p>Create a digital marketing strategy for launching a new mobile app.</p>
+<button onclick="copyPrompt(this)">Copy Prompt</button>
+</div>
+
+<div class="prompt">
 <h3>Pitch Deck Prompt</h3>
 <p>Create a startup pitch deck outline for an AI-powered productivity tool.</p>
 <button onclick="copyPrompt(this)">Copy Prompt</button>
@@ -105,6 +131,7 @@ background:#333;
 
 </div>
 
+<!-- CODING PROMPTS -->
 
 <div class="category">
 <h2>💻 Coding Prompts</h2>
@@ -121,8 +148,19 @@ background:#333;
 <button onclick="copyPrompt(this)">Copy Prompt</button>
 </div>
 
+<div class="prompt">
+<h3>Build Website Prompt</h3>
+<p>Create a simple responsive website using HTML, CSS, and JavaScript.</p>
+<button onclick="copyPrompt(this)">Copy Prompt</button>
 </div>
 
+<div class="prompt">
+<h3>API Integration Prompt</h3>
+<p>Explain how to integrate a REST API into a JavaScript application.</p>
+<button onclick="copyPrompt(this)">Copy Prompt</button>
+</div>
+
+</div>
 
 
 <script>
@@ -140,8 +178,6 @@ btn.innerText="Copy Prompt";
 },2000);
 
 }
-
-
 
 function searchPrompts(){
 
@@ -163,7 +199,6 @@ prompts[i].style.display="none";
 }
 
 </script>
-
 
 </body>
 </html>
