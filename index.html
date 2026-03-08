@@ -65,17 +65,28 @@ background:#1e1e1e;
 }
 
 button{
-background:black;
-color:white;
 border:none;
-padding:8px 12px;
+padding:8px 10px;
 border-radius:5px;
 cursor:pointer;
-margin-top:10px;
+margin-top:8px;
+margin-right:5px;
 }
 
-.vote{
-background:#ff9800;
+.copy{background:black;color:white;}
+.vote{background:#ff9800;color:white;}
+.edit{background:#2196f3;color:white;}
+.delete{background:#f44336;color:white;}
+
+.comments{
+margin-top:10px;
+font-size:14px;
+}
+
+.comment-box{
+width:100%;
+padding:6px;
+margin-top:5px;
 }
 
 .form-box{
@@ -114,30 +125,7 @@ border:1px solid #ccc;
 <input type="text" id="searchInput" placeholder="Search prompts..." onkeyup="searchPrompts()">
 </div>
 
-<div class="grid" id="promptGrid">
-
-<div class="prompt">
-<h3>Travel Blog Prompt</h3>
-<p>Act as a professional travel blogger and write about the best tourist places in Karnataka.</p>
-<button onclick="copyPrompt(this)">Copy Prompt</button>
-<button class="vote" onclick="vote(this)">⭐ <span>0</span></button>
-</div>
-
-<div class="prompt">
-<h3>Startup Idea Prompt</h3>
-<p>Generate 10 SaaS startup ideas in the AI industry.</p>
-<button onclick="copyPrompt(this)">Copy Prompt</button>
-<button class="vote" onclick="vote(this)">⭐ <span>0</span></button>
-</div>
-
-<div class="prompt">
-<h3>SEO Blog Prompt</h3>
-<p>Write a 1500-word SEO optimized blog post about digital marketing trends.</p>
-<button onclick="copyPrompt(this)">Copy Prompt</button>
-<button class="vote" onclick="vote(this)">⭐ <span>0</span></button>
-</div>
-
-</div>
+<div class="grid" id="promptGrid"></div>
 
 <div class="form-box">
 
@@ -145,7 +133,7 @@ border:1px solid #ccc;
 
 <input id="title" placeholder="Prompt Title">
 
-<textarea id="text" placeholder="Write your prompt here"></textarea>
+<textarea id="text" placeholder="Write your prompt"></textarea>
 
 <button onclick="submitPrompt()">Submit Prompt</button>
 
@@ -155,55 +143,127 @@ border:1px solid #ccc;
 
 <script>
 
-function copyPrompt(btn){
+let prompts = JSON.parse(localStorage.getItem("prompts") || "[]")
 
-let text=btn.previousElementSibling.innerText
+function save(){
+localStorage.setItem("prompts",JSON.stringify(prompts))
+}
+
+
+function render(){
+
+let grid=document.getElementById("promptGrid")
+grid.innerHTML=""
+
+prompts.forEach((p,i)=>{
+
+let div=document.createElement("div")
+div.className="prompt"
+
+div.innerHTML=`
+
+<h3>${p.title}</h3>
+<p>${p.text}</p>
+
+<button class="copy" onclick="copyPrompt('${p.text}',this)">Copy</button>
+
+<button class="vote" onclick="vote(${i})">⭐ ${p.votes}</button>
+
+<button class="edit" onclick="editPrompt(${i})">Edit</button>
+
+<button class="delete" onclick="deletePrompt(${i})">Delete</button>
+
+<div class="comments">
+
+<strong>Comments:</strong>
+
+${p.comments.map(c=>"<div>- "+c+"</div>").join("")}
+
+<input class="comment-box" placeholder="Add comment" onkeydown="addComment(event,${i})">
+
+</div>
+
+`
+
+grid.appendChild(div)
+
+})
+
+}
+
+
+function copyPrompt(text,btn){
+
 navigator.clipboard.writeText(text)
 
 btn.innerText="Copied!"
 
 setTimeout(()=>{
-btn.innerText="Copy Prompt"
+
+btn.innerText="Copy"
+
 },2000)
 
 }
 
 
-function vote(btn){
+function vote(i){
 
-let span=btn.querySelector("span")
-let count=parseInt(span.innerText)
+prompts[i].votes++
 
-count++
+save()
 
-span.innerText=count
-
-}
-
-
-function searchPrompts(){
-
-let input=document.getElementById("searchInput").value.toLowerCase()
-
-let prompts=document.getElementsByClassName("prompt")
-
-for(let i=0;i<prompts.length;i++){
-
-let text=prompts[i].innerText.toLowerCase()
-
-if(text.includes(input)){
-prompts[i].style.display="block"
-}else{
-prompts[i].style.display="none"
-}
-
-}
+render()
 
 }
 
 
-function toggleDark(){
-document.body.classList.toggle("dark")
+function deletePrompt(i){
+
+prompts.splice(i,1)
+
+save()
+
+render()
+
+}
+
+
+function editPrompt(i){
+
+let newText=prompt("Edit prompt",prompts[i].text)
+
+if(newText){
+
+prompts[i].text=newText
+
+save()
+
+render()
+
+}
+
+}
+
+
+function addComment(e,i){
+
+if(e.key==="Enter"){
+
+let text=e.target.value
+
+if(text){
+
+prompts[i].comments.push(text)
+
+save()
+
+render()
+
+}
+
+}
+
 }
 
 
@@ -217,23 +277,50 @@ alert("Fill all fields")
 return
 }
 
-let div=document.createElement("div")
+prompts.push({
 
-div.className="prompt"
+title:title,
+text:text,
+votes:0,
+comments:[]
 
-div.innerHTML=`
-<h3>${title}</h3>
-<p>${text}</p>
-<button onclick="copyPrompt(this)">Copy Prompt</button>
-<button class="vote" onclick="vote(this)">⭐ <span>0</span></button>
-`
+})
 
-document.getElementById("promptGrid").appendChild(div)
+save()
+
+render()
 
 document.getElementById("title").value=""
 document.getElementById("text").value=""
 
 }
+
+
+function searchPrompts(){
+
+let input=document.getElementById("searchInput").value.toLowerCase()
+
+let cards=document.getElementsByClassName("prompt")
+
+for(let i=0;i<cards.length;i++){
+
+let text=cards[i].innerText.toLowerCase()
+
+cards[i].style.display=text.includes(input)?"block":"none"
+
+}
+
+}
+
+
+function toggleDark(){
+
+document.body.classList.toggle("dark")
+
+}
+
+
+render()
 
 </script>
 
