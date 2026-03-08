@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 
 <html>
-
 <head>
 <title>AI Prompt Library</title>
 
 <style>
 
 body{
-font-family: Arial;
+font-family: Arial, sans-serif;
 max-width:1100px;
 margin:auto;
 padding:20px;
@@ -28,10 +27,6 @@ align-items:center;
 margin-bottom:20px;
 }
 
-h1{
-text-align:center;
-}
-
 .search-box{
 text-align:center;
 margin:20px 0;
@@ -43,10 +38,6 @@ padding:10px;
 margin-top:10px;
 border-radius:6px;
 border:1px solid #ccc;
-}
-
-.category{
-margin-top:40px;
 }
 
 .prompt{
@@ -75,6 +66,10 @@ button:hover{
 background:#333;
 }
 
+.category{
+margin-top:40px;
+}
+
 </style>
 
 </head>
@@ -83,7 +78,7 @@ background:#333;
 
 <div class="navbar">
 <h2>🚀 AI Prompt Library</h2>
-<button onclick="toggleDark()">Dark Mode</button>
+<button onclick="toggleDark()">Toggle Dark Mode</button>
 </div>
 
 <div class="search-box">
@@ -138,7 +133,6 @@ background:#333;
 <!-- SUBMIT PROMPT -->
 
 <div class="category">
-
 <h2>📨 Submit Your Prompt</h2>
 
 <div class="prompt">
@@ -153,121 +147,99 @@ background:#333;
 
 </div>
 
-<!-- USER PROMPTS -->
+<!-- COMMUNITY PROMPTS -->
 
 <div class="category">
-
 <h2>🌟 Community Prompts</h2>
 
-<div id="userPrompts"></div>
+<div id="communityPrompts"></div>
 
 </div>
 
 <script>
 
-
 function copyPrompt(btn){
-
-const text = btn.previousElementSibling.innerText;
-
+let text = btn.previousElementSibling.innerText;
 navigator.clipboard.writeText(text);
-
 btn.innerText="Copied!";
-
 setTimeout(()=>{
-btn.innerText="Copy Prompt"
-},2000)
-
+btn.innerText="Copy Prompt";
+},2000);
 }
 
 
 function searchPrompts(){
-
-let input = document.getElementById("searchInput").value.toLowerCase()
-
-let prompts = document.getElementsByClassName("prompt")
+let input = document.getElementById("searchInput").value.toLowerCase();
+let prompts = document.getElementsByClassName("prompt");
 
 for(let i=0;i<prompts.length;i++){
-
-let text = prompts[i].innerText.toLowerCase()
-
+let text = prompts[i].innerText.toLowerCase();
 if(text.includes(input)){
-prompts[i].style.display="block"
+prompts[i].style.display="block";
 }else{
-prompts[i].style.display="none"
+prompts[i].style.display="none";
 }
-
 }
-
 }
 
 
 function toggleDark(){
-
-document.body.classList.toggle("dark")
-
+document.body.classList.toggle("dark");
 }
 
 
 function submitPrompt(){
 
-let title=document.getElementById("title").value
-let prompt=document.getElementById("promptText").value
+let title=document.getElementById("title").value;
+let text=document.getElementById("promptText").value;
 
-if(title==""||prompt==""){
-alert("Please fill all fields")
-return
+if(title=="" || text==""){
+alert("Please fill all fields");
+return;
 }
 
-let newPrompt={title:title,text:prompt}
+let prompts = JSON.parse(localStorage.getItem("communityPrompts") || "[]");
 
-let prompts=JSON.parse(localStorage.getItem("prompts")||"[]")
+prompts.push({title:title,text:text});
 
-prompts.push(newPrompt)
+localStorage.setItem("communityPrompts",JSON.stringify(prompts));
 
-localStorage.setItem("prompts",JSON.stringify(prompts))
+document.getElementById("title").value="";
+document.getElementById("promptText").value="";
 
-displayPrompts()
-
-document.getElementById("title").value=""
-document.getElementById("promptText").value=""
+displayPrompts();
 
 }
 
 
 function displayPrompts(){
 
-let container=document.getElementById("userPrompts")
+let container=document.getElementById("communityPrompts");
+container.innerHTML="";
 
-container.innerHTML=""
-
-let prompts=JSON.parse(localStorage.getItem("prompts")||"[]")
+let prompts = JSON.parse(localStorage.getItem("communityPrompts") || "[]");
 
 prompts.forEach(p=>{
 
-let div=document.createElement("div")
+let div=document.createElement("div");
 
-div.className="prompt"
+div.className="prompt";
 
 div.innerHTML=`
 <h3>${p.title}</h3>
 <p>${p.text}</p>
 <button onclick="copyPrompt(this)">Copy Prompt</button>
-`
+`;
 
-container.appendChild(div)
+container.appendChild(div);
 
-})
+});
 
 }
 
-
-displayPrompts()
-
+displayPrompts();
 
 </script>
 
 </body>
-
 </html>
-
