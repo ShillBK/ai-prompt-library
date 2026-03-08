@@ -6,12 +6,14 @@
 
 <style>
 
+*{
+box-sizing:border-box;
+}
+
 body{
-font-family: Arial, sans-serif;
-max-width:1100px;
-margin:auto;
-padding:20px;
-background:#f6f8fa;
+font-family:Arial, sans-serif;
+margin:0;
+background:#f4f6f8;
 transition:0.3s;
 }
 
@@ -20,43 +22,65 @@ background:#121212;
 color:white;
 }
 
-.navbar{
+header{
+background:black;
+color:white;
+padding:15px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:20px;
 }
 
-.search-box{
-text-align:center;
+header h1{
+margin:0;
+font-size:22px;
+}
+
+.container{
+max-width:1100px;
+margin:auto;
+padding:20px;
+}
+
+.search{
 margin:20px 0;
+text-align:center;
 }
 
-input, textarea{
-width:100%;
+.search input{
+width:60%;
 padding:10px;
-margin-top:10px;
+font-size:16px;
 border-radius:6px;
 border:1px solid #ccc;
 }
 
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+}
+
 .prompt{
 background:white;
-padding:20px;
-margin-top:15px;
+padding:18px;
 border-radius:8px;
-box-shadow:0 2px 5px rgba(0,0,0,0.1);
+box-shadow:0 3px 8px rgba(0,0,0,0.1);
 }
 
 .dark .prompt{
 background:#1e1e1e;
 }
 
+.prompt h3{
+margin-top:0;
+}
+
 button{
 background:black;
 color:white;
-padding:8px 14px;
 border:none;
+padding:8px 12px;
 border-radius:5px;
 cursor:pointer;
 margin-top:10px;
@@ -66,8 +90,23 @@ button:hover{
 background:#333;
 }
 
-.category{
+.form-box{
 margin-top:40px;
+background:white;
+padding:20px;
+border-radius:8px;
+}
+
+.dark .form-box{
+background:#1e1e1e;
+}
+
+input,textarea{
+width:100%;
+padding:10px;
+margin-top:10px;
+border-radius:6px;
+border:1px solid #ccc;
 }
 
 </style>
@@ -76,70 +115,58 @@ margin-top:40px;
 
 <body>
 
-<div class="navbar">
-<h2>🚀 AI Prompt Library</h2>
-<button onclick="toggleDark()">Toggle Dark Mode</button>
-</div>
+<header>
+<h1>🚀 AI Prompt Library</h1>
+<button onclick="toggleDark()">Dark Mode</button>
+</header>
 
-<div class="search-box">
+<div class="container">
+
+<div class="search">
 <input type="text" id="searchInput" placeholder="Search prompts..." onkeyup="searchPrompts()">
 </div>
 
-<!-- WRITING PROMPTS -->
-
-<div class="category">
-<h2>✍️ Writing Prompts</h2>
+<div class="grid" id="promptGrid">
 
 <div class="prompt">
 <h3>Travel Blog Prompt</h3>
-<p>Act as a professional travel blogger and write a detailed article about the best tourist places in Karnataka.</p>
+<p>Act as a professional travel blogger and write about the best tourist places in Karnataka.</p>
+<button onclick="copyPrompt(this)">Copy Prompt</button>
+</div>
+
+<div class="prompt">
+<h3>Startup Idea Prompt</h3>
+<p>Generate 10 SaaS startup ideas in the AI industry.</p>
 <button onclick="copyPrompt(this)">Copy Prompt</button>
 </div>
 
 <div class="prompt">
 <h3>SEO Blog Prompt</h3>
-<p>Write a 1500-word SEO optimized blog post about digital marketing trends in 2026.</p>
+<p>Write a 1500-word SEO optimized blog post about digital marketing trends.</p>
 <button onclick="copyPrompt(this)">Copy Prompt</button>
 </div>
-
-</div>
-
-<!-- BUSINESS PROMPTS -->
-
-<div class="category">
-<h2>💼 Business Prompts</h2>
 
 <div class="prompt">
-<h3>Startup Idea Generator</h3>
-<p>Generate 10 SaaS startup ideas in the AI industry that solve real problems.</p>
+<h3>YouTube Script Prompt</h3>
+<p>Write a 5-minute YouTube script about artificial intelligence trends.</p>
 <button onclick="copyPrompt(this)">Copy Prompt</button>
 </div>
-
-</div>
-
-<!-- CODING PROMPTS -->
-
-<div class="category">
-<h2>💻 Coding Prompts</h2>
 
 <div class="prompt">
 <h3>Debug Code Prompt</h3>
-<p>Act as a senior software engineer and help debug this code step-by-step.</p>
+<p>Act as a senior engineer and help debug this code step-by-step.</p>
 <button onclick="copyPrompt(this)">Copy Prompt</button>
 </div>
 
 </div>
 
-<!-- SUBMIT PROMPT -->
+<div class="form-box">
 
-<div class="category">
-<h2>📨 Submit Your Prompt</h2>
-
-<div class="prompt">
+<h2>Submit Your Prompt</h2>
 
 <input id="title" placeholder="Prompt Title">
 
-<textarea id="promptText" placeholder="Write your prompt here..."></textarea>
+<textarea id="text" placeholder="Write your prompt here"></textarea>
 
 <button onclick="submitPrompt()">Submit Prompt</button>
 
@@ -147,97 +174,72 @@ margin-top:40px;
 
 </div>
 
-<!-- COMMUNITY PROMPTS -->
-
-<div class="category">
-<h2>🌟 Community Prompts</h2>
-
-<div id="communityPrompts"></div>
-
-</div>
-
 <script>
 
 function copyPrompt(btn){
-let text = btn.previousElementSibling.innerText;
-navigator.clipboard.writeText(text);
-btn.innerText="Copied!";
+let text=btn.previousElementSibling.innerText
+navigator.clipboard.writeText(text)
+
+btn.innerText="Copied!"
+
 setTimeout(()=>{
-btn.innerText="Copy Prompt";
-},2000);
+btn.innerText="Copy Prompt"
+},2000)
 }
 
 
 function searchPrompts(){
-let input = document.getElementById("searchInput").value.toLowerCase();
-let prompts = document.getElementsByClassName("prompt");
+
+let input=document.getElementById("searchInput").value.toLowerCase()
+
+let prompts=document.getElementsByClassName("prompt")
 
 for(let i=0;i<prompts.length;i++){
-let text = prompts[i].innerText.toLowerCase();
+
+let text=prompts[i].innerText.toLowerCase()
+
 if(text.includes(input)){
-prompts[i].style.display="block";
+prompts[i].style.display="block"
 }else{
-prompts[i].style.display="none";
+prompts[i].style.display="none"
 }
+
 }
+
 }
 
 
 function toggleDark(){
-document.body.classList.toggle("dark");
+document.body.classList.toggle("dark")
 }
 
 
 function submitPrompt(){
 
-let title=document.getElementById("title").value;
-let text=document.getElementById("promptText").value;
+let title=document.getElementById("title").value
+let text=document.getElementById("text").value
 
-if(title=="" || text==""){
-alert("Please fill all fields");
-return;
+if(title==""||text==""){
+alert("Fill all fields")
+return
 }
 
-let prompts = JSON.parse(localStorage.getItem("communityPrompts") || "[]");
+let div=document.createElement("div")
 
-prompts.push({title:title,text:text});
-
-localStorage.setItem("communityPrompts",JSON.stringify(prompts));
-
-document.getElementById("title").value="";
-document.getElementById("promptText").value="";
-
-displayPrompts();
-
-}
-
-
-function displayPrompts(){
-
-let container=document.getElementById("communityPrompts");
-container.innerHTML="";
-
-let prompts = JSON.parse(localStorage.getItem("communityPrompts") || "[]");
-
-prompts.forEach(p=>{
-
-let div=document.createElement("div");
-
-div.className="prompt";
+div.className="prompt"
 
 div.innerHTML=`
-<h3>${p.title}</h3>
-<p>${p.text}</p>
+<h3>${title}</h3>
+<p>${text}</p>
 <button onclick="copyPrompt(this)">Copy Prompt</button>
-`;
+`
 
-container.appendChild(div);
+document.getElementById("promptGrid").appendChild(div)
 
-});
+document.getElementById("title").value=""
+document.getElementById("text").value=""
 
 }
-
-displayPrompts();
 
 </script>
 
